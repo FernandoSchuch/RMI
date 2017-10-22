@@ -23,6 +23,7 @@ public class RecepcaoNoticia implements Runnable{
     private ServerSocket server;
     private NoticiaTableModel tm;
     private ArrayList<Noticia> noticias;
+    private boolean executar = true;
     
     public RecepcaoNoticia(ServerSocket server, NoticiaTableModel tm, ArrayList<Noticia> noticias){
         this.server = server;
@@ -33,7 +34,7 @@ public class RecepcaoNoticia implements Runnable{
     @Override
     public void run(){        
         try {
-            while (true){
+            while (executar){
                 Socket cliente = server.accept();
                 Scanner s = new Scanner(cliente.getInputStream());
                 while (s.hasNextLine()) {
@@ -57,6 +58,10 @@ public class RecepcaoNoticia implements Runnable{
             //Faz nada
             e.printStackTrace();
         }
+    }
+    
+    public void parar(){
+        executar = false;
     }
     
 }

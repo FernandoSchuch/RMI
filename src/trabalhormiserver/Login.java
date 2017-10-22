@@ -146,7 +146,7 @@ public class Login extends javax.swing.JFrame implements MouseListener{
 
     public void aceitarLogin(InOut.OutLogar out){       
         if (out.sucesso){
-            new FeedNew(out.user);
+            new Feed(out.user);
             setVisible(false);
             dispose();
         } else {
@@ -280,7 +280,7 @@ public class Login extends javax.swing.JFrame implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         //Aqui faz o entrar como visitante        
-        new FeedNew(new Leitor("visitante", "visitante", null, null));
+        new Feed(new Leitor("visitante", "visitante", null, null));
         setVisible(false);
     }
 
