@@ -95,7 +95,6 @@ public class Publicar extends javax.swing.JDialog implements KeyListener {
         });
 
         tfTitulo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        tfTitulo.setText("Titulo de futibas");
         tfTitulo.setToolTipText("");
         tfTitulo.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         tfTitulo.setDisabledTextColor(new java.awt.Color(204, 204, 204));
@@ -120,7 +119,6 @@ public class Publicar extends javax.swing.JDialog implements KeyListener {
         taTexto.setColumns(20);
         taTexto.setLineWrap(true);
         taTexto.setRows(5);
-        taTexto.setText("PEga essa merda aqui");
         jScrollPane1.setViewportView(taTexto);
 
         lbRestante.setText("jLabel1");
@@ -212,18 +210,18 @@ public class Publicar extends javax.swing.JDialog implements KeyListener {
             }
             String texto  = taTexto.getText();
             if (titulo.trim().equals("")){
-                Util.MensagemErro(this, "Título deve ser informado!");
+                Util.MensagemErro(this, "Título deve ser informado.");
             } else if (topic == null){
-                Util.MensagemErro(this, "Tópico deve ser informado!");                
+                Util.MensagemErro(this, "Tópico deve ser informado.");                
             } else if (topic.codigo == null && topic.nome.trim().equals("")){
-                Util.MensagemErro(this, "Descrição do tópico deve ser informada quando um novo tópico for criado");
+                Util.MensagemErro(this, "Descrição do tópico deve ser informada quando um novo tópico for criado.");
             } else if (texto.trim().equals("")){
-                Util.MensagemErro(this, "Texto deve ser informado!");
+                Util.MensagemErro(this, "Texto deve ser informado.");
             } else if (texto.length() > 180){
-                Util.MensagemErro(this, "Texto não pode ser maior que 180 caracteres!");
+                Util.MensagemErro(this, "Texto não pode ser maior que 180 caracteres.");
             } else {
                Cliente.getInstance()._service.publicar(new Noticia(titulo, texto, topic, (Escritor) usuarioAtual));    
-               Util.Mensagem(this, "Notícia publicada com sucesso");
+               Util.Mensagem(this, "Notícia publicada com sucesso.");
                limparCampos();
             }
         } catch(Exception e){

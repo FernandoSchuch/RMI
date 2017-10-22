@@ -92,7 +92,7 @@ public class CadastroNoticias {
 
     public Noticia getUltimaNoticia(Topico topic) {
         List noticiasDesteTopico = new LinkedList<Noticia>();
-        Noticia ultimaNoticia;
+        Noticia ultimaNoticia = null;
         for (Integer codigo : noticiasCadastradas.keySet()) {
             Noticia noticia = noticiasCadastradas.get(codigo);
             if (noticia.topico.codigo.compareTo(topic.codigo) == 0) {
@@ -100,7 +100,9 @@ public class CadastroNoticias {
             }
         }
         int indiceUltimaNoticia = noticiasDesteTopico.size() - 1;
-        ultimaNoticia = (Noticia) noticiasDesteTopico.get(indiceUltimaNoticia);
+        if (indiceUltimaNoticia >= 0){
+            ultimaNoticia = (Noticia) noticiasDesteTopico.get(indiceUltimaNoticia);
+        }
         return ultimaNoticia;
     }
 

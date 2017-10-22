@@ -173,11 +173,14 @@ public class Servidor extends UnicastRemoteObject implements Service {
     public Noticia getUltimaNoticia(String userLogin, Topico topic) {
         GerenciadorLog.getInstance().printLog("Enviando a última notícia de " + topic.nome + " para o usuário " + userLogin);
         Noticia ultimaNoticia = CadastroNoticias.getInstance().getUltimaNoticia(topic);
-        if (userLogin.equalsIgnoreCase("visitante")) {
+        if (ultimaNoticia != null && userLogin.equalsIgnoreCase("visitante")) {
             ultimaNoticia.lida = false;
             return ultimaNoticia;
         }
-        Noticia noticiaControlada = GerenciadorNoticiasLidasRecebidas.getInstance().getNoticia(userLogin, ultimaNoticia.codigo);
+        Noticia noticiaControlada = null;
+        if (ultimaNoticia != null){
+            noticiaControlada = GerenciadorNoticiasLidasRecebidas.getInstance().getNoticia(userLogin, ultimaNoticia.codigo);
+        }
         return noticiaControlada;
     }
 

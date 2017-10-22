@@ -8,6 +8,7 @@ package trabalhormiserver;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -21,10 +22,10 @@ import javax.swing.JOptionPane;
  * @author asuspc
  */
 public class Login extends javax.swing.JFrame implements MouseListener{
-
-    /**
-     * Creates new form Login
-     */
+    
+    private Color verde    = new Color(0, 102, 0);
+    private Color vermelho = new Color(255,0,0);
+    
     public Login() {
         initComponents();
         Util.centralizaTela(this);
@@ -32,7 +33,7 @@ public class Login extends javax.swing.JFrame implements MouseListener{
         lbErro.setText("");
         lbVisitante.addMouseListener(this);        
         setTitle("Feed de notícias");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     /**
@@ -56,13 +57,9 @@ public class Login extends javax.swing.JFrame implements MouseListener{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tfLogin.setText("leitor");
-
         jLabel1.setText("Usuário:");
 
         jLabel2.setText("Senha:");
-
-        tfSenha.setText("leitor");
 
         btLogin.setText("Login");
         btLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -150,8 +147,10 @@ public class Login extends javax.swing.JFrame implements MouseListener{
     public void aceitarLogin(InOut.OutLogar out){       
         if (out.sucesso){
             new FeedNew(out.user);
-            setVisible(false);            
+            setVisible(false);
+            dispose();
         } else {
+            lbErro.setForeground(vermelho);
             lbErro.setText(out.erro);
         }
     }
@@ -189,10 +188,10 @@ public class Login extends javax.swing.JFrame implements MouseListener{
                         msg = Cliente.getInstance()._service.criar(new Escritor(login, senha, ip, porta));
                     }
                     if (msg.equals("")){                
-                        lbErro.setForeground(new Color(0, 102, 0));
+                        lbErro.setForeground(verde);
                         lbErro.setText("Usuário criado com sucesso");
                     } else {
-                        lbErro.setForeground(new Color(255,0,0));
+                        lbErro.setForeground(vermelho);
                         lbErro.setText(msg);
                     }
                 }

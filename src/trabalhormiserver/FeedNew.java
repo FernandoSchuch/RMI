@@ -6,7 +6,6 @@
 package trabalhormiserver;
 
 import java.awt.Container;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.ServerSocket;
@@ -14,7 +13,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -66,13 +64,13 @@ public class FeedNew extends JFrame implements ActionListener{
         Util.centralizaTela(this);    
         criaSocket();
         AtualizaTopicos();        
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
     
     private void criaSocket(){
         if (usuarioAtual != null){
-            if (!usuarioAtual.login.equals("visitante")){
+            if (usuarioAtual instanceof Leitor && !usuarioAtual.login.equals("visitante")){
                 try {                
                     ServerSocket server = new ServerSocket(usuarioAtual.porta);
                     Thread t = new Thread(new RecepcaoNoticia(server, tmNoticias, noticias));
@@ -103,12 +101,12 @@ public class FeedNew extends JFrame implements ActionListener{
         try {
             df.parse(tfDataIni.getText());                    
         } catch (ParseException ex) {
-            throw new Exception("Data inicial inválida!");            
+            throw new Exception("Data inicial inválida.");            
         }
         try {
             df.parse(tfDataFim.getText());                    
         } catch (ParseException ex) {
-            throw new Exception("Data final inválida!");
+            throw new Exception("Data final inválida.");
         }
         return true;
     }
@@ -155,10 +153,12 @@ public class FeedNew extends JFrame implements ActionListener{
         TableColumnModel ColumnModel = tbNoticias.getColumnModel();        
         ColumnModel.getColumn(0).setCellRenderer(new MyCellRenderer());
         ColumnModel.getColumn(0).setPreferredWidth(30);
-        ColumnModel.getColumn(1).setPreferredWidth(220);
-        ColumnModel.getColumn(2).setPreferredWidth(80);
-        ColumnModel.getColumn(3).setPreferredWidth(120);
+        ColumnModel.getColumn(1).setPreferredWidth(240);
+        ColumnModel.getColumn(2).setPreferredWidth(140);
+        ColumnModel.getColumn(3).setPreferredWidth(140);
         taTexto.setEditable(false);
+        taTexto.setLineWrap(true);
+	taTexto.setWrapStyleWord(true);
         tbNoticias.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -183,9 +183,9 @@ public class FeedNew extends JFrame implements ActionListener{
             yTabela = btPublicar;
         else
             yTabela = btConsultar;
-        tbNoticias.setBounds(leftInicial, yTabela.getY() + yTabela.getHeight() + 20, 500, 200);
+        tbNoticias.setBounds(leftInicial, yTabela.getY() + yTabela.getHeight() + 20, 550, 200);
         spNoticias.setBounds(tbNoticias.getBounds());
-        taTexto.setBounds(tbNoticias.getX() + tbNoticias.getWidth() + margem, tbNoticias.getY(), 300, 200);
+        taTexto.setBounds(tbNoticias.getX() + tbNoticias.getWidth() + margem, tbNoticias.getY(), 250, 200);        
         lbUsuario.setBounds(leftInicial, tbNoticias.getY() + tbNoticias.getHeight() + margem, 300, height);
         lbUsuario.setText(lbUsuario.getText() + usuarioAtual.login);
         lbTopicos.setHorizontalAlignment(JLabel.RIGHT);
@@ -202,7 +202,8 @@ public class FeedNew extends JFrame implements ActionListener{
         container.add(lbDataFim);
         container.add(lbUsuario);
         container.add(cbTopicos);
-        container.add(cbUltima);
+        if (!usuarioAtual.login.equals("visitante"))
+            container.add(cbUltima);
         container.add(tfDataIni);
         container.add(tfDataFim);        
         container.add(spNoticias);        
@@ -236,7 +237,10 @@ public class FeedNew extends JFrame implements ActionListener{
                 noticias = Cliente.getInstance()._service.getTodasNoticias(usuarioAtual.login);
             } else {
                 if (cbUltima.isSelected()){
-                    noticias.add(Cliente.getInstance()._service.getUltimaNoticia(usuarioAtual.login, topic));
+                    Noticia n = Cliente.getInstance()._service.getUltimaNoticia(usuarioAtual.login, topic);
+                    if (n != null) {
+                        noticias.add(n);
+                    }
                 } else {
                     if (validouData()){                        
                         noticias = Cliente.getInstance()._service.getNoticias(usuarioAtual.login, topic, tfDataIni.getText(), tfDataFim.getText());
@@ -251,10 +255,6 @@ public class FeedNew extends JFrame implements ActionListener{
         } catch(Exception e){
             Util.MensagemErro(this, "Erro ao consultar notícias: " + e.getMessage());
         }
-    }
-    
-    public static void main(String args[]){
-        new FeedNew(new Leitor("", "", null, null));
     }
 
     @Override

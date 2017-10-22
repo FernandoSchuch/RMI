@@ -18,7 +18,7 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    private static final String FORMATO_DATA_HORA = "dd/MM/yyyy hh:nn:ss";
+    private static final String FORMATO_DATA_HORA = "dd/MM/yyyy hh:mm:ss";
     private static final String FORMATO_DATA = "dd/MM/yyyy";
 
     public static String gerDataAtualFormatada() {
