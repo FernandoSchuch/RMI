@@ -12,7 +12,7 @@ echo[
 timeout 3
 cls
 
-echo ============= INICIANDO ALGORITMO SERVIDOR =============
+echo ============= INICIANDO ALGORITMO CLIENTE =============
 cd ../
 cd ../
 java -jar TrabalhoRMIClient.jar
