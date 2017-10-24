@@ -49,15 +49,7 @@ public class RecepcaoNoticia implements Runnable{
     
     private synchronized void novaNoticia(String msg){
         Noticia n = NoticiaProtocol.NoticiaProtocol(msg);
-        tm.addNoticia(n, true);
-        try{
-            if (tm.getRowCount() >= Cliente.getInstance().limiteNoticias){
-                tm.removeNoticia(tm.getRowCount()-1);
-            }
-        } catch (Exception e){
-            //Faz nada
-            e.printStackTrace();
-        }
+        tm.addNoticia(n, true);        
     }
     
     public void parar(){

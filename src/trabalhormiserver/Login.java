@@ -279,7 +279,7 @@ public class Login extends javax.swing.JFrame implements MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //Aqui faz o entrar como visitante        
+        //Aqui faz o "entrar como visitante"
         new Feed(new Leitor("visitante", "visitante", null, null));
         setVisible(false);
     }
