@@ -89,8 +89,9 @@ public class Feed extends JFrame implements ActionListener, WindowListener{
     }
     
     private void BuscarNoticiasNaoRecebidas(){
-        try { 
-            tmNoticias.addAll(Cliente.getInstance()._service.getNoticiasNaoRecebidas(usuarioAtual.login));
+        try {            
+            if (!usuarioAtual.login.equals("visitante"))                
+                tmNoticias.addAll(Cliente.getInstance()._service.getNoticiasNaoRecebidas(usuarioAtual.login));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao buscar notícias: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
